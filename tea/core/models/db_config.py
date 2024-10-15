@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import (create_async_engine, AsyncEngine, AsyncSession,
                                     async_sessionmaker)
 
-from tea.core import settings
+from core import settings
 
 
 class DBConfig:
