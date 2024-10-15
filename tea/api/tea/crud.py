@@ -5,6 +5,7 @@ from core.models import Tea
 
 async def create_tea(session: AsyncSession, product: ProductCreate) -> Tea:
     product = Tea(**product.model_dump())
+    product.image = 'null'
     session.add(product)
     await session.commit()
     await session.refresh(product)
