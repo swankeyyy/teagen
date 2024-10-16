@@ -4,7 +4,6 @@ from typing import Optional
 
 class ProductBase(BaseModel):
     """Base model for all products(teas)"""
-
     name: str
     description: str
     cook_time: float
@@ -19,5 +18,5 @@ class Product(ProductBase):
     model_config = ConfigDict(
         from_attributes=True
     )
-    image: str
+    image: Optional[str] = None
     id: int

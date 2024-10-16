@@ -1,5 +1,5 @@
 from typing import Annotated
-
+from fastapi.exceptions import HTTPException
 from fastapi import APIRouter, Request, Response, UploadFile, File, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
@@ -20,12 +20,8 @@ async def create_tea_view(product: ProductCreate,
 
 
 @router.post("/add_image/{tea_id}")
-async def add_tea_image_view(tea_id: int, image: UploadFile):
-    print(image.filename)
-    path = './media/'
-    file_name = path + str(tea_id) + image.filename
-    with open(file_name, 'wb+') as f:
-        f.write(image.file.read())
-        f.close()
-
-    return file_name
+async def add_tea_image_view(tea_id: int, image: UploadFile, session: AsyncSession = Depends(db_config.get_session)) -> Response:
+    result = await crud.load_tea_image(session=session, image=image, tea_id=tea_id)
+    if result:
+        return Response(status_code=201)
+    raise HTTPException(500, detail='wrong id')
