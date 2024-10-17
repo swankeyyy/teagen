@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict
-from typing import Optional
+from typing import Optional, List
 
 
 class ProductBase(BaseModel):
@@ -14,9 +14,20 @@ class ProductCreate(ProductBase):
     pass
 
 
+class Type(BaseModel):
+    id: int
+    name: str
+
+
 class Product(ProductBase):
     model_config = ConfigDict(
         from_attributes=True
     )
     image: Optional[str] = None
     id: int
+    tea_type: Type
+
+
+class TypeList(Type):
+
+    teas: list[Product]

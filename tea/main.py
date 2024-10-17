@@ -19,8 +19,8 @@ main_app = FastAPI(lifespan=lifespan)
 @main_app.get("/media/{img}", tags=["media"], summary="Response Image by path")
 async def media_view(img: str) -> FileResponse:
     """response image by path from item db"""
-    print(img)
     return FileResponse(f'media/{img}', status_code=200)
+
 
 main_app.include_router(api_router)
 
