@@ -35,3 +35,11 @@ async def get_tea_by_id(tea_id: int, session: AsyncSession) -> Tea | bool:
     if item:
         return item
     return False
+
+
+async def get_all_teas(session: AsyncSession) -> list[Tea] | bool:
+    stmt = select(Tea)
+    items = await session.scalars(stmt)
+    if items:
+        return list(items)
+    return False
