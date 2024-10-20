@@ -4,7 +4,7 @@ from fastapi import APIRouter, Request, Response, UploadFile, File, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 from . import crud
-from api.tea.schemas import Product, ProductCreate, TypeList
+from api.tea.schemas import Product, ProductCreate, TypeList, TeaCountryList
 from core.models import db_config
 
 router = APIRouter()
@@ -40,7 +40,6 @@ async def get_all_teas_view(session: AsyncSession = Depends(db_config.get_sessio
 @router.get("/types", response_model=list[TypeList], summary="Get list of categories",
             status_code=status.HTTP_200_OK)
 async def get_all_tea_types_view(session: AsyncSession = Depends(db_config.get_session)):
-    print(1111)
     """return all tea categories with their list of teas"""
     result = await crud.get_all_tea_types(session=session)
     if result:
@@ -48,9 +47,19 @@ async def get_all_tea_types_view(session: AsyncSession = Depends(db_config.get_s
     raise HTTPException(status_code=404, detail='Categories not found, at first create it')
 
 
+@router.get("/countries", response_model=list[TeaCountryList], status_code=status.HTTP_200_OK,
+            summary="Get list of all Tea Countries")
+async def get_all_tea_countries_view(session: AsyncSession = Depends(db_config.get_session)):
+    result = await crud.get_all_tea_countries(session=session)
+    if result:
+        return result
+    raise HTTPException(status_code=404, detail='Countries not found, at first create it')
+
+
 @router.get("/{tea_id}", response_model=Product, status_code=status.HTTP_200_OK, summary="Get Tea by ID")
 async def get_tea_by_id_view(tea_id: int, session: AsyncSession = Depends(db_config.get_session)):
     """get id and return description of tea by id"""
+
     result = await crud.get_tea_by_id(session=session, tea_id=tea_id)
     if result:
         return result

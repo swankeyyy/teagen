@@ -19,6 +19,11 @@ class Type(BaseModel):
     name: str
 
 
+class TeaCountry(BaseModel):
+    id: int
+    name: str
+
+
 class Product(ProductBase):
     model_config = ConfigDict(
         from_attributes=True
@@ -26,8 +31,25 @@ class Product(ProductBase):
     image: Optional[str] = None
     id: int
     tea_type: Type
+    tea_country: TeaCountry
+
+
+class TypeProduct(BaseModel):
+    id: int
+    name: str
+
+
+class CountryProduct(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True
+    )
+    id: int
+    name: str
 
 
 class TypeList(Type):
+    teas: list[TypeProduct]
 
-    teas: list[Product]
+
+class TeaCountryList(TeaCountry):
+    teas: Optional[list[CountryProduct]] = None
