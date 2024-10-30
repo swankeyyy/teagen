@@ -23,6 +23,7 @@ async def media_view(img: str) -> FileResponse:
 
 
 main_app.include_router(api_router)
+main_app.mount("/static", StaticFiles(directory="static"), name="static")
 
 if __name__ == "__main__":
     uvicorn.run("main:main_app",
