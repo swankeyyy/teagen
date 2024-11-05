@@ -2,9 +2,10 @@ from core.models import Base
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from typing import List
+from .mixins.id_int_pk import IdIntPkMixin
 
 
-class Tea(Base):
+class Tea(IdIntPkMixin, Base):
     __tablename__ = 'tea'
 
     name: Mapped[str] = mapped_column(unique=True)
@@ -21,7 +22,7 @@ class Tea(Base):
         return f"<Tea({self.name}, {self.id})>"
 
 
-class TeaType(Base):
+class TeaType(IdIntPkMixin, Base):
     __tablename__ = 'tea_type'
 
     name: Mapped[str] = mapped_column()
@@ -31,7 +32,7 @@ class TeaType(Base):
         return f"<Type({self.name}, {self.id})>"
 
 
-class TeaCountry(Base):
+class TeaCountry(IdIntPkMixin, Base):
     __tablename__ = 'tea_country'
     name: Mapped[str] = mapped_column(String(length=30), unique=True)
     description: Mapped[str] = mapped_column(String(length=200), )

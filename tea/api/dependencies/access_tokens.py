@@ -5,6 +5,6 @@ from core.models.db_config import db_config
 
 
 async def get_access_token_db(
-        session: AsyncSession = Depends(db_config.get_db_session),
+        session: AsyncSession = Depends(db_config.get_session),
 ):
     yield AccessToken.get_db(session=session)
